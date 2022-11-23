@@ -22,4 +22,9 @@
     <style name="Theme.HangGame.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.HangGame.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    
+    <style name="SplashTheme" parent="Theme.HangGame">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+
+    </style>
 </resources>
