@@ -18,12 +18,23 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        Thread.sleep(1000)
+        setTheme(R.style.SplashTheme)
+
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
+
+        if(firebaseAuth.currentUser != null)
+        {
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         binding.loginButton.setOnClickListener{
             val username = binding.userInput.text.toString()
