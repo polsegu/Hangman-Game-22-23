@@ -3,11 +3,14 @@ package com.example.hanggame
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import com.example.hanggame.databinding.ActivityPlayBinding
+import kotlin.concurrent.timer
+import kotlin.system.measureTimeMillis
 
 class PlayActivity : AppCompatActivity() {
 
@@ -18,6 +21,9 @@ class PlayActivity : AppCompatActivity() {
     private lateinit var letterUsed: TextView
     private lateinit var lettersLayouts: ConstraintLayout
     private lateinit var showTries: TextView
+    private lateinit var timerShow: TextView
+    private lateinit var scoreShow: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +31,8 @@ class PlayActivity : AppCompatActivity() {
         binding = ActivityPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        timerShow = binding.timer
+        scoreShow = binding.score
         wordTextView = binding.wordTextView
         letterUsed = binding.letterUsed
         lettersLayouts = binding.lettersLayout
@@ -44,6 +51,17 @@ class PlayActivity : AppCompatActivity() {
                 }
             }
         }
+
+        object : CountDownTimer(gameManager.getMaxTime(),1000){
+            override fun onTick(p0: Long) {
+                timerShow.text = "Time left: ${(p0 / 1000).toInt()}"
+                gameManager.setCurrentTime((p0 / 1000).toFloat())
+            }
+            override fun onFinish() {
+                val intent = Intent(this@PlayActivity, Lose::class.java)
+                startActivity(intent)
+            }
+        }.start()
     }
 
     private fun updateUI(gameState: GameState) {
@@ -51,6 +69,7 @@ class PlayActivity : AppCompatActivity() {
             is GameState.Lost -> showGameLost()
             is GameState.Won -> showGameWon()
             is GameState.Running -> {
+                scoreShow.text = "Score: ${gameManager.getScore()}"
                 wordTextView.text = gameState.underscoreWord
                 letterUsed.text = "Letters used: ${gameState.letterUsed}"
                 showTries.text = "Tries: ${gameManager.getCurrentTries()} / 5"
@@ -65,6 +84,7 @@ class PlayActivity : AppCompatActivity() {
 
     private fun showGameWon()
     {
+        gameManager.addScore(gameManager.getScore() * gameManager.getCurrentTime())
         val intent = Intent(this@PlayActivity, Win::class.java)
         startActivity(intent)
     }

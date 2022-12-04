@@ -8,8 +8,14 @@ class GameManager {
     private lateinit var wordToGuess: String
     private val tries = 5
     private var currentTries = 0
+    private var score = 0
+
+    private var currentTime:Int = 0
+    private var maxTime:Long = 60000
 
     fun startGame() : GameState {
+        currentTime = 0
+        score = 0
         letterUsed = ""
         currentTries = 0
         val randomIndex = Random.nextInt(0, GameConstants.words.size)
@@ -21,6 +27,31 @@ class GameManager {
     fun getCurrentTries() : Int
     {
         return currentTries
+    }
+
+    fun getMaxTime() : Long
+    {
+        return maxTime
+    }
+
+    fun setCurrentTime(value: Float)
+    {
+        currentTime += value.toInt()
+    }
+
+    fun getCurrentTime():Int
+    {
+        return currentTime
+    }
+
+    fun getScore() : Int
+    {
+        return score
+    }
+
+    fun addScore(value: Int)
+    {
+        score += value
     }
 
     fun generateUnderScores(word: String)
@@ -68,7 +99,12 @@ class GameManager {
         }
         if(indexs.isEmpty())
         {
+            addScore(-50)
             currentTries++
+        }
+        else
+        {
+            addScore(200)
         }
         underscoreWord = finalUnderscore
 
