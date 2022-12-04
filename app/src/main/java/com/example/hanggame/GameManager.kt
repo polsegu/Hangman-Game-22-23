@@ -34,9 +34,9 @@ class GameManager {
         return maxTime
     }
 
-    fun setCurrentTime(value: Float)
+    fun setCurrentTime(value: Int)
     {
-        currentTime += value.toInt()
+        currentTime = value
     }
 
     fun getCurrentTime():Int

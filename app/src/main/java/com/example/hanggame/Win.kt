@@ -16,7 +16,9 @@ class Win : AppCompatActivity() {
         binding = ActivityWinBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.scoreText.text = "Final Score: ${gameManager.getScore()}"
+        val bundle = intent.extras
+        val data = bundle?.getString("score")
+        binding.scoreText.text = "Final Score: ${data}"
 
         binding.mainMenuButtonWIn.setOnClickListener {
             val intent = Intent(this@Win, MainActivity::class.java)

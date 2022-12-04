@@ -21,7 +21,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.rankingShow.setOnClickListener {
-            //not done yet
+            val intent = Intent(this@MainActivity, RankingActivity::class.java)
+            startActivity(intent)
         }
 
         binding.optionsShow.setOnClickListener {

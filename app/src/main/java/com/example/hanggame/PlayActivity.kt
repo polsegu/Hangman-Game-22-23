@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import com.example.hanggame.databinding.ActivityPlayBinding
@@ -23,7 +24,7 @@ class PlayActivity : AppCompatActivity() {
     private lateinit var showTries: TextView
     private lateinit var timerShow: TextView
     private lateinit var scoreShow: TextView
-
+    private lateinit var timer : CountDownTimer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,16 +53,19 @@ class PlayActivity : AppCompatActivity() {
             }
         }
 
-        object : CountDownTimer(gameManager.getMaxTime(),1000){
+        timer = object : CountDownTimer(gameManager.getMaxTime(), 1000) {
             override fun onTick(p0: Long) {
                 timerShow.text = "Time left: ${(p0 / 1000).toInt()}"
-                gameManager.setCurrentTime((p0 / 1000).toFloat())
+                gameManager.setCurrentTime((p0 / 1000).toInt())
             }
+
             override fun onFinish() {
                 val intent = Intent(this@PlayActivity, Lose::class.java)
                 startActivity(intent)
             }
         }.start()
+
+
     }
 
     private fun updateUI(gameState: GameState) {
@@ -78,14 +82,17 @@ class PlayActivity : AppCompatActivity() {
     }
     private fun showGameLost()
     {
+        timer.cancel()
         val intent = Intent(this@PlayActivity, Lose::class.java)
         startActivity(intent)
     }
 
     private fun showGameWon()
     {
+        timer.cancel()
         gameManager.addScore(gameManager.getScore() * gameManager.getCurrentTime())
         val intent = Intent(this@PlayActivity, Win::class.java)
+        intent.putExtra("score", (gameManager.getScore()).toString())
         startActivity(intent)
     }
 
