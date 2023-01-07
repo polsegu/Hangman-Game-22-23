@@ -3,11 +3,9 @@ package com.example.hanggame
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import com.example.hanggame.databinding.ActivityLoseBinding
-import com.example.hanggame.databinding.ActivityMainBinding
 
-class Lose : AppCompatActivity() {
+class LoseActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoseBinding
 
@@ -18,7 +16,7 @@ class Lose : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.mainMenuButton.setOnClickListener {
-            val intent = Intent(this@Lose, MainActivity::class.java)
+            val intent = Intent(this@LoseActivity, MainActivity::class.java)
             startActivity(intent)
         }
     }

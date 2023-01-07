@@ -13,6 +13,13 @@
         android:theme="@style/Theme.HangGame"
         tools:targetApi="31">
         <activity
+            android:name=".RegisterActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".RankingActivity"
             android:exported="false">
             <meta-data
@@ -20,21 +27,21 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Lose"
+            android:name=".LoseActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Win"
+            android:name=".WinActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Pause"
+            android:name=".PauseActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

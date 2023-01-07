@@ -12,7 +12,7 @@ class RankingActivity : AppCompatActivity() {
     private lateinit var binding : ActivityRankingBinding
 
     private val itemList = ArrayList<String>()
-    private lateinit var customAdapter: CustomAdapter
+    private lateinit var customAdapter: RankingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +21,7 @@ class RankingActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = binding.recyclerView
 
-        customAdapter = CustomAdapter(itemList)
+        customAdapter = RankingAdapter(itemList)
 
         val layoutMang = LinearLayoutManager(applicationContext)
 

@@ -6,12 +6,9 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import com.example.hanggame.databinding.ActivityPlayBinding
-import kotlin.concurrent.timer
-import kotlin.system.measureTimeMillis
 
 class PlayActivity : AppCompatActivity() {
 
@@ -60,7 +57,7 @@ class PlayActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                val intent = Intent(this@PlayActivity, Lose::class.java)
+                val intent = Intent(this@PlayActivity, LoseActivity::class.java)
                 startActivity(intent)
             }
         }.start()
@@ -83,7 +80,7 @@ class PlayActivity : AppCompatActivity() {
     private fun showGameLost()
     {
         timer.cancel()
-        val intent = Intent(this@PlayActivity, Lose::class.java)
+        val intent = Intent(this@PlayActivity, LoseActivity::class.java)
         startActivity(intent)
     }
 
@@ -91,7 +88,7 @@ class PlayActivity : AppCompatActivity() {
     {
         timer.cancel()
         gameManager.addScore(gameManager.getScore() * gameManager.getCurrentTime())
-        val intent = Intent(this@PlayActivity, Win::class.java)
+        val intent = Intent(this@PlayActivity, WinActivity::class.java)
         intent.putExtra("score", (gameManager.getScore()).toString())
         startActivity(intent)
     }

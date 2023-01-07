@@ -23,12 +23,12 @@ class LoginActivity : AppCompatActivity() {
         setTheme(R.style.SplashTheme)
 
         super.onCreate(savedInstanceState)
-
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
 
+        //Auto log in (already loged in)
         if(firebaseAuth.currentUser != null)
         {
             val intent = Intent(this@LoginActivity, MainActivity::class.java)
@@ -36,9 +36,17 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
+        //Go to Register
+        binding.txtSignUp.setOnClickListener {
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        //Sign in verification (first time)
         binding.loginButton.setOnClickListener{
-            val username = binding.userInput.text.toString()
-            val password = binding.passInput.text.toString()
+            val username = binding.userInputWrapper.text.toString()
+            val password = binding.userInputWrapper.text.toString()
 
             firebaseAuth.signInWithEmailAndPassword(username, password)
                 .addOnSuccessListener {
@@ -50,31 +58,14 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        binding.registerButton.setOnClickListener {
-            val email = binding.userInput.text.toString()
-            val password = binding.passInput.text.toString()
-
-            firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if(task.isSuccessful)
-                    {
-                        Toast.makeText(this, "Registrared succesfully", Toast.LENGTH_SHORT).show()
-                    }
-                    else
-                    {
-                        Toast.makeText(this, "Invalid registration", Toast.LENGTH_SHORT).show()
-                    }
-                }
-        }
-
-        binding.userInput.setOnFocusChangeListener{ view, hasFocus ->
+        binding.userInputWrapper.setOnFocusChangeListener{ view, hasFocus ->
             if(!hasFocus)
             {
-                val username = binding.userInput.text.toString()
+                val username = binding.userInputWrapper.text.toString()
                 if(!Patterns.EMAIL_ADDRESS.matcher(username).matches())
-                    binding.userInput.error = "Invalid email"
+                    binding.userInputWrapper.error = "Invalid email"
                 else
-                    binding.userInput.error = null
+                    binding.userInputWrapper.error = null
             }
         }
 
