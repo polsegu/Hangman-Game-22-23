@@ -6,13 +6,14 @@ class GameManager {
     private var letterUsed: String = ""
     private lateinit var underscoreWord: String
     private lateinit var wordToGuess: String
-    private val tries = 5
-    private var currentTries = 0
-    private var score = 0
+    val tries = 5
+    var currentTries = 0
+    var score = 0
 
-    private var currentTime:Int = 0
-    private var maxTime:Long = 60000
+    var currentTime:Int = 0
+    var maxTime:Long = 60000
 
+    //Genera el juego al empezar y resetea todo
     fun startGame() : GameState {
         currentTime = 0
         score = 0
@@ -24,36 +25,12 @@ class GameManager {
         return getGameState()
     }
 
-    fun getCurrentTries() : Int
-    {
-        return currentTries
-    }
-
-    fun getMaxTime() : Long
-    {
-        return maxTime
-    }
-
-    fun setCurrentTime(value: Int)
-    {
-        currentTime = value
-    }
-
-    fun getCurrentTime():Int
-    {
-        return currentTime
-    }
-
-    fun getScore() : Int
-    {
-        return score
-    }
-
     fun addScore(value: Int)
     {
         score += value
     }
 
+    //Genera las _ segun las letras de la palabra a adivinar
     fun generateUnderScores(word: String)
     {
         val sb = StringBuilder()
@@ -64,6 +41,7 @@ class GameManager {
         underscoreWord = sb.toString();
     }
 
+    //Comprueba y devuelve el estado del juego dependiendo de si la adivina o pasa de los intentos permitidos
     fun getGameState(): GameState {
         if(underscoreWord.equals(wordToGuess, true))
         {

@@ -39,29 +39,31 @@ class PlayActivity : AppCompatActivity() {
         val gameState = gameManager.startGame()
         updateUI(gameState)
 
+        //Elimina las letras una vez usadas, ya que no se podrán volver a utilizar
         lettersLayouts.children.forEach { letterView ->
             if(letterView is TextView)
             {
                 letterView.setOnClickListener{
                     val gameState = gameManager.play((letterView).text[0])
                     updateUI(gameState)
-                    letterView.visibility = View.GONE
+                    letterView.visibility = View.INVISIBLE
                 }
             }
         }
 
-        timer = object : CountDownTimer(gameManager.getMaxTime(), 1000) {
+        //Mira el tiempo si no se acaba lo actualiza, si se acaba ejecuta Lose
+        timer = object : CountDownTimer(gameManager.maxTime, 1000) {
             override fun onTick(p0: Long) {
                 timerShow.text = "Time left: ${(p0 / 1000).toInt()}"
-                gameManager.setCurrentTime((p0 / 1000).toInt())
+                gameManager.currentTime = (p0 / 1000).toInt()
             }
 
             override fun onFinish() {
                 val intent = Intent(this@PlayActivity, LoseActivity::class.java)
                 startActivity(intent)
+                finish()
             }
         }.start()
-
 
     }
 
@@ -70,10 +72,10 @@ class PlayActivity : AppCompatActivity() {
             is GameState.Lost -> showGameLost()
             is GameState.Won -> showGameWon()
             is GameState.Running -> {
-                scoreShow.text = "Score: ${gameManager.getScore()}"
+                scoreShow.text = "Score: ${gameManager.score}"
                 wordTextView.text = gameState.underscoreWord
                 letterUsed.text = "Letters used: ${gameState.letterUsed}"
-                showTries.text = "Tries: ${gameManager.getCurrentTries()} / 5"
+                showTries.text = "Tries: ${gameManager.currentTries} / 5"
             }
         }
     }
@@ -82,15 +84,16 @@ class PlayActivity : AppCompatActivity() {
         timer.cancel()
         val intent = Intent(this@PlayActivity, LoseActivity::class.java)
         startActivity(intent)
+        finish()
     }
-
     private fun showGameWon()
     {
         timer.cancel()
-        gameManager.addScore(gameManager.getScore() * gameManager.getCurrentTime())
+        gameManager.addScore(gameManager.score * gameManager.currentTime)
         val intent = Intent(this@PlayActivity, WinActivity::class.java)
-        intent.putExtra("score", (gameManager.getScore()).toString())
+        intent.putExtra("score", (gameManager.score).toString())
         startActivity(intent)
+        finish()
     }
 
     private fun startGame()

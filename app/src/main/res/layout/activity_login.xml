@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#4C1D1D"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_app"
     tools:context=".LoginActivity">
 
 
@@ -12,15 +12,16 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
+        android:fontFamily="@font/b_wrath"
         android:text="@string/login"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="48sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13" />
+        app:layout_constraintVertical_bias="0.085" />
 
     <EditText
         android:id="@+id/userInputWrapper"
@@ -34,6 +35,7 @@
         android:drawableStart="@android:drawable/ic_dialog_email"
         android:drawablePadding="10dp"
         android:ems="10"
+        android:fontFamily="@font/b_wrath"
         android:hint="@string/email"
         android:inputType="textPersonName"
         android:paddingStart="20dp"
@@ -56,8 +58,9 @@
         android:drawableStart="@android:drawable/ic_lock_idle_lock"
         android:drawablePadding="10dp"
         android:ems="10"
+        android:fontFamily="@font/b_wrath"
         android:hint="@string/password"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:minHeight="48dp"
         android:paddingStart="20dp"
         android:paddingTop="10dp"
@@ -69,33 +72,6 @@
         app:layout_constraintStart_toStartOf="@+id/userInputWrapper"
         app:layout_constraintTop_toBottomOf="@+id/userInputWrapper" />
 
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/button_background"
-        android:shadowColor="@color/white"
-        android:text="@string/login"
-        app:layout_constraintEnd_toEndOf="@+id/passInputWrapper"
-        app:layout_constraintStart_toStartOf="@+id/passInputWrapper"
-        app:layout_constraintTop_toBottomOf="@+id/passInputWrapper"
-        app:rippleColor="@color/white"
-        app:strokeColor="@color/white"
-        tools:ignore="DuplicateSpeakableTextCheck" />
-
-
-
-    <TextView
-        android:id="@+id/textSuccesful"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="175dp"
-        android:layout_marginTop="50dp"
-        android:textColor="@android:color/holo_green_dark"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -104,13 +80,14 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/loginButton"
-        app:layout_constraintStart_toStartOf="@+id/loginButton"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton">
+        app:layout_constraintEnd_toEndOf="@+id/buttonsLayout"
+        app:layout_constraintStart_toStartOf="@+id/buttonsLayout"
+        app:layout_constraintTop_toBottomOf="@+id/buttonsLayout">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/b_wrath"
             android:text="@string/don_t_have_an_account"
             android:textColor="@color/white" />
 
@@ -118,6 +95,7 @@
             android:id="@+id/txtSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/b_wrath"
             android:text="@string/signup"
             android:textColor="@color/teal_200" />
     </LinearLayout>
@@ -126,12 +104,46 @@
         android:id="@+id/buttonsLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="40dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="@+id/passInputWrapper"
         app:layout_constraintStart_toStartOf="@+id/passInputWrapper"
-        app:layout_constraintTop_toBottomOf="@+id/passInputWrapper"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/passInputWrapper">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/button_background"
+            android:fontFamily="@font/b_wrath"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:shadowColor="@color/white"
+            android:text="@string/login"
+            app:rippleColor="@color/white"
+            app:strokeColor="@color/white"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/loginAnonymusButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background"
+            android:fontFamily="@font/b_wrath"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:shadowColor="@color/white"
+            android:text="@string/login_anonymous"
+            app:rippleColor="@color/white"
+            app:strokeColor="@color/white" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

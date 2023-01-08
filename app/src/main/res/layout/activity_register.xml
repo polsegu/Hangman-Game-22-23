@@ -5,17 +5,17 @@
     android:id="@+id/titleRegister"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4C1D1D"
+    android:background="@drawable/background_app"
     tools:context=".RegisterActivity">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
+        android:fontFamily="@font/b_wrath"
         android:text="@string/register"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="48sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,6 +34,7 @@
         android:drawableStart="@android:drawable/ic_dialog_email"
         android:drawablePadding="10dp"
         android:ems="10"
+        android:fontFamily="@font/b_wrath"
         android:hint="@string/email"
         android:inputType="textPersonName"
         android:paddingStart="20dp"
@@ -56,8 +57,9 @@
         android:drawableStart="@android:drawable/ic_lock_idle_lock"
         android:drawablePadding="10dp"
         android:ems="10"
+        android:fontFamily="@font/b_wrath"
         android:hint="@string/password"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:minHeight="48dp"
         android:paddingStart="20dp"
         android:paddingTop="10dp"
@@ -69,12 +71,13 @@
         app:layout_constraintStart_toStartOf="@+id/inputUserName"
         app:layout_constraintTop_toBottomOf="@+id/inputUserName" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:background="@drawable/button_background"
+        android:fontFamily="@font/b_wrath"
         android:shadowColor="@color/white"
         android:text="@string/register"
         app:layout_constraintEnd_toEndOf="@+id/inputPassword"
@@ -89,10 +92,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:fontFamily="@font/b_wrath"
         android:text="@string/loginQuestion"
         android:textAlignment="center"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/buttonRegister"
         app:layout_constraintStart_toStartOf="@+id/buttonRegister"
         app:layout_constraintTop_toBottomOf="@+id/buttonRegister" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

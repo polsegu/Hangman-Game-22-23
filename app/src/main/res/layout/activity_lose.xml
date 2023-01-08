@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4C1D1D"
+    android:background="@drawable/background_app"
     tools:context=".LoseActivity">
 
     <ImageView
@@ -17,29 +17,44 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/image_lose" />
 
+
     <TextView
         android:id="@+id/textTitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="115dp"
-        android:layout_marginTop="75dp"
         android:layout_marginEnd="30dp"
-        android:fontFamily="sans-serif-black"
-        android:text="NP HANGGAME"
+        android:fontFamily="@font/b_wrath"
+        android:text="@string/np_hanggame"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="@+id/loseImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/loseImage" />
+        app:layout_constraintTop_toTopOf="@+id/loseImage"
+        app:layout_constraintVertical_bias="0.1" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/mainMenuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="144dp"
-        android:layout_marginBottom="220dp"
-        android:background="@color/black"
-        android:text="Main Menu"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:background="@drawable/button_background_black"
+        android:fontFamily="@font/b_wrath"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp"
+        android:shadowColor="@color/black"
+        android:text="@string/main_menu"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/loseImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/loseImage"
+        app:layout_constraintVertical_bias="0.58000004"
+        app:rippleColor="@color/black"
+        app:strokeColor="@color/black"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
