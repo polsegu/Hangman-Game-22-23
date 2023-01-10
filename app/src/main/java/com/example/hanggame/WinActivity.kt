@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.example.hanggame.data.PlayerModel
 import com.example.hanggame.databinding.ActivityWinBinding
 import com.example.hanggame.managers.GameManager
+import com.example.hanggame.services.BackgroundSoundService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -58,5 +59,15 @@ class WinActivity : AppCompatActivity() {
             Toast.makeText(this, "Data ${err.message}", Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    override fun onPause() {
+        BackgroundSoundService.mMediaPlayer?.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        BackgroundSoundService.mMediaPlayer?.start()
     }
 }

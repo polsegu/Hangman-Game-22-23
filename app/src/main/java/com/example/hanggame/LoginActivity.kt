@@ -106,4 +106,13 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
+    override fun onPause() {
+        BackgroundSoundService.mMediaPlayer?.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        BackgroundSoundService.mMediaPlayer?.start()
+    }
 }

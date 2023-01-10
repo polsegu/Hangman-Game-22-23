@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.hanggame.databinding.ActivityMainBinding
+import com.example.hanggame.services.BackgroundSoundService
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,5 +31,14 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, OptionsActivity::class.java)
             startActivity(intent)
         }
+    }
+    override fun onPause() {
+        BackgroundSoundService.mMediaPlayer?.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        BackgroundSoundService.mMediaPlayer?.start()
     }
 }

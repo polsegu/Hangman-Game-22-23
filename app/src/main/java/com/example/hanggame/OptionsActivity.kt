@@ -42,6 +42,15 @@ class OptionsActivity : AppCompatActivity() {
                 // write custom code for progress is stopped
             }
         })
+    }
 
+    override fun onPause() {
+        BackgroundSoundService.mMediaPlayer?.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        BackgroundSoundService.mMediaPlayer?.start()
     }
 }

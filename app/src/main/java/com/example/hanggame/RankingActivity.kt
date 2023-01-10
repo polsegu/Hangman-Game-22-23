@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hanggame.data.PlayerModel
 import com.example.hanggame.databinding.ActivityRankingBinding
+import com.example.hanggame.services.BackgroundSoundService
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -70,6 +71,16 @@ class RankingActivity : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         })
+    }
+
+    override fun onPause() {
+        BackgroundSoundService.mMediaPlayer?.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        BackgroundSoundService.mMediaPlayer?.start()
     }
 
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.hanggame.databinding.ActivityBannerBinding
+import com.example.hanggame.services.BackgroundSoundService
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 
@@ -13,6 +14,7 @@ class BannerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        BackgroundSoundService.mMediaPlayer?.pause()
         binding = ActivityBannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -26,4 +28,5 @@ class BannerActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 }

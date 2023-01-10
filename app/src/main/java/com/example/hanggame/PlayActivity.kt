@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import com.example.hanggame.databinding.ActivityPlayBinding
 import com.example.hanggame.managers.GameManager
+import com.example.hanggame.services.BackgroundSoundService
 import com.example.hanggame.util.PrefUtils
 
 
@@ -93,6 +94,7 @@ class PlayActivity : AppCompatActivity() {
     }
     override fun onResume() {
         super.onResume()
+        BackgroundSoundService.mMediaPlayer?.start()
         if(gameManager.stateTimer == GameManager.TimerState.Paused)
         {
             gameManager.maxTime = PrefUtils.getPreviusTimerSecs(this)
@@ -102,6 +104,7 @@ class PlayActivity : AppCompatActivity() {
     }
     override fun onPause() {
         super.onPause()
+        BackgroundSoundService.mMediaPlayer?.pause()
         timer.cancel()
         gameManager.stateTimer = GameManager.TimerState.Paused
         PrefUtils.setPreviousTimerSecs((gameManager.currentTime*1000).toLong(), this)
@@ -141,5 +144,6 @@ class PlayActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
 
 }
