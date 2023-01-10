@@ -43,7 +43,12 @@ class LoginActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
 
         //Auto log in (already loged in)
-
+        if (firebaseAuth.getCurrentUser() != null) {
+            // User is signed in (getCurrentUser() will be null if not signed in)
+            val intent = Intent(this, MainActivity::class.java);
+            startActivity(intent);
+            finish();
+        }
 
         //Go to Register
         binding.txtSignUp.setOnClickListener {
