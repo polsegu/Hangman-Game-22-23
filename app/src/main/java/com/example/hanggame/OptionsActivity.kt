@@ -1,5 +1,6 @@
 package com.example.hanggame
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.SeekBar
 import android.widget.Toast
@@ -16,11 +17,15 @@ class OptionsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOptionsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //AudioManager am = mContext.getSystemService(Context.AUDIO_SERVICE)
 
-        //val am = applicationContext.getSystemService(applicationContext.audio)
-        //AudioManager.adjustVol
+        binding.menuButton.setOnClickListener {
+            val intent = Intent(this@OptionsActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         binding.musicSlider?.progress = 100
+
         binding.musicSlider?.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
