@@ -12,6 +12,9 @@ class LoseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val intentLose = Intent(this, NotificationsActivity::class.java)
+        startService(intentLose)
+
         binding = ActivityLoseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -19,5 +22,6 @@ class LoseActivity : AppCompatActivity() {
             val intent = Intent(this@LoseActivity, BannerActivity::class.java)
             startActivity(intent)
         }
+
     }
 }

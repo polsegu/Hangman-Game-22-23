@@ -29,6 +29,8 @@ class RegisterActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if(task.isSuccessful)
                     {
+                        val intentRegister = Intent(this, NotificationsActivity::class.java)
+                        startService(intentRegister)
                         Toast.makeText(this, "Registrared succesfully", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                         startActivity(intent)

@@ -13,6 +13,10 @@ class WinActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val intentWin = Intent(this, NotificationsActivity::class.java)
+        startService(intentWin)
+
         binding = ActivityWinBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

@@ -47,8 +47,6 @@ class LoginActivity : AppCompatActivity() {
 
         //Go to Register
         binding.txtSignUp.setOnClickListener {
-            val intent2 = Intent(this, NotificationsActivity::class.java)
-            startService(intent2)
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
             finish()
@@ -62,6 +60,8 @@ class LoginActivity : AppCompatActivity() {
             firebaseAuth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
+                        val intentLogin = Intent(this, NotificationsActivity::class.java)
+                        startService(intentLogin)
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
