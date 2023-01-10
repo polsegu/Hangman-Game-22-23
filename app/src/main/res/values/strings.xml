@@ -30,4 +30,7 @@
     <string name="np_hanggame">NP HANGGAME</string>
     <string name="main_menu">Main Menu</string>
     <string name="score">Score:</string>
+    <string name="pause">PAUSE</string>
+    <string name="options">OPTIONS</string>
+    <string name="music">MUSIC</string>
 </resources>

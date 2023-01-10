@@ -1,15 +1,11 @@
 package com.example.hanggame
 
 import android.content.Intent
-import android.graphics.Camera
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.PersistableBundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import com.example.hanggame.databinding.ActivityPlayBinding
@@ -28,10 +24,8 @@ class PlayActivity : AppCompatActivity() {
     private lateinit var scoreShow: TextView
     private lateinit var timer : CountDownTimer
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -53,7 +47,7 @@ class PlayActivity : AppCompatActivity() {
             gameManager.stateTimer = GameManager.TimerState.Running
             gameManager.maxTime = PrefUtils.getPreviusTimerSecs(this)
             gameManager.stateTimer = PrefUtils.getPreviousState(this)
-            startTimer()
+            startGameTimer()
         }
         binding.pauseButton.setOnClickListener {
             timer.cancel()
@@ -64,10 +58,8 @@ class PlayActivity : AppCompatActivity() {
             gameManager.stateTimer = GameManager.TimerState.Paused
         }
 
-        //Mira el tiempo si no se acaba lo actualiza, si se acaba ejecuta Lose
         if(gameManager.stateTimer == GameManager.TimerState.Running)
-        {
-            //Elimina las letras una vez usadas, ya que no se podrán volver a utilizar
+        { //Mira el tiempo si no se acaba lo actualiza, si se acaba ejecuta Lose
             lettersLayouts.children.forEach { letterView ->
                 if(letterView is TextView)
                 {
@@ -78,11 +70,12 @@ class PlayActivity : AppCompatActivity() {
                     }
                 }
             }
-            startTimer()
+            startGameTimer()
         }
     }
-    fun startTimer()
-    {
+
+    fun startGameTimer()
+    {        //Mira el tiempo si no se acaba lo actualiza, si se acaba ejecuta Lose
         timer = object : CountDownTimer(gameManager.maxTime, 1000) {
             override fun onTick(p0: Long) {
                 timerShow.text = "Time left: ${(p0 / 1000).toInt()}"
@@ -100,7 +93,7 @@ class PlayActivity : AppCompatActivity() {
         if(gameManager.stateTimer == GameManager.TimerState.Paused)
         {
             gameManager.maxTime = PrefUtils.getPreviusTimerSecs(this)
-            startTimer()
+            startGameTimer()
         }
         gameManager.stateTimer = GameManager.TimerState.Running
     }
@@ -142,6 +135,4 @@ class PlayActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
-
 }
