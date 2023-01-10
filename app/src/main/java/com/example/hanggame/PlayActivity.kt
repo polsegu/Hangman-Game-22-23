@@ -1,14 +1,19 @@
 package com.example.hanggame
 
 import android.content.Intent
+import android.graphics.Camera
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.PersistableBundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import com.example.hanggame.databinding.ActivityPlayBinding
+import com.example.hanggame.util.PrefUtils
 
 class PlayActivity : AppCompatActivity() {
 
@@ -22,6 +27,7 @@ class PlayActivity : AppCompatActivity() {
     private lateinit var timerShow: TextView
     private lateinit var scoreShow: TextView
     private lateinit var timer : CountDownTimer
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,34 +45,74 @@ class PlayActivity : AppCompatActivity() {
         val gameState = gameManager.startGame()
         updateUI(gameState)
 
-        //Elimina las letras una vez usadas, ya que no se podrán volver a utilizar
-        lettersLayouts.children.forEach { letterView ->
-            if(letterView is TextView)
-            {
-                letterView.setOnClickListener{
-                    val gameState = gameManager.play((letterView).text[0])
-                    updateUI(gameState)
-                    letterView.visibility = View.INVISIBLE
-                }
-            }
+        binding.playButton.background.alpha = 120
+
+        binding.playButton.setOnClickListener {
+            binding.pauseButton.visibility = View.VISIBLE
+            binding.playButton.visibility = View.INVISIBLE
+            gameManager.stateTimer = GameManager.TimerState.Running
+            gameManager.maxTime = PrefUtils.getPreviusTimerSecs(this)
+            gameManager.stateTimer = PrefUtils.getPreviousState(this)
+            startTimer()
+        }
+        binding.pauseButton.setOnClickListener {
+            timer.cancel()
+            binding.playButton.visibility = View.VISIBLE
+            binding.pauseButton.visibility = View.INVISIBLE
+            PrefUtils.setPreviousTimerSecs((gameManager.currentTime * 1000).toLong(), this)
+            PrefUtils.setPreviousState(gameManager.stateTimer, this)
+            gameManager.stateTimer = GameManager.TimerState.Paused
         }
 
         //Mira el tiempo si no se acaba lo actualiza, si se acaba ejecuta Lose
+        if(gameManager.stateTimer == GameManager.TimerState.Running)
+        {
+            //Elimina las letras una vez usadas, ya que no se podrán volver a utilizar
+            lettersLayouts.children.forEach { letterView ->
+                if(letterView is TextView)
+                {
+                    letterView.setOnClickListener{
+                        val gameState = gameManager.play((letterView).text[0])
+                        updateUI(gameState)
+                        letterView.visibility = View.INVISIBLE
+                    }
+                }
+            }
+            startTimer()
+        }
+    }
+    fun startTimer()
+    {
         timer = object : CountDownTimer(gameManager.maxTime, 1000) {
             override fun onTick(p0: Long) {
                 timerShow.text = "Time left: ${(p0 / 1000).toInt()}"
                 gameManager.currentTime = (p0 / 1000).toInt()
             }
-
             override fun onFinish() {
                 val intent = Intent(this@PlayActivity, LoseActivity::class.java)
                 startActivity(intent)
                 finish()
             }
         }.start()
-
+    }
+    override fun onResume() {
+        super.onResume()
+        if(gameManager.stateTimer == GameManager.TimerState.Paused)
+        {
+            gameManager.maxTime = PrefUtils.getPreviusTimerSecs(this)
+            startTimer()
+        }
+        gameManager.stateTimer = GameManager.TimerState.Running
+    }
+    override fun onPause() {
+        super.onPause()
+        timer.cancel()
+        gameManager.stateTimer = GameManager.TimerState.Paused
+        PrefUtils.setPreviousTimerSecs((gameManager.currentTime*1000).toLong(), this)
+        PrefUtils.setPreviousState(gameManager.stateTimer, this)
     }
 
+    //refresh all the UI
     private fun updateUI(gameState: GameState) {
         when (gameState) {
             is GameState.Lost -> showGameLost()
@@ -79,6 +125,7 @@ class PlayActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun showGameLost()
     {
         timer.cancel()
@@ -96,14 +143,5 @@ class PlayActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun startGame()
-    {
-        val gameState = gameManager.startGame()
-        lettersLayouts.visibility = View.VISIBLE
-        lettersLayouts.children.forEach { letterView->
-            letterView.visibility = View.VISIBLE
-        }
-        updateUI(gameState)
-    }
 
 }

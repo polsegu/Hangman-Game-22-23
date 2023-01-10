@@ -4,17 +4,22 @@ import kotlin.random.Random
 
 class GameManager {
     private var letterUsed: String = ""
-    private lateinit var underscoreWord: String
-    private lateinit var wordToGuess: String
+    lateinit var underscoreWord: String
+    lateinit var wordToGuess: String
     val tries = 5
     var currentTries = 0
     var score = 0
-
     var currentTime:Int = 0
     var maxTime:Long = 60000
+    var stateTimer: TimerState = TimerState.Stopped
+
+    enum class TimerState {
+        Running, Paused, Stopped
+    }
 
     //Genera el juego al empezar y resetea todo
     fun startGame() : GameState {
+        stateTimer = TimerState.Running
         currentTime = 0
         score = 0
         letterUsed = ""
@@ -69,7 +74,6 @@ class GameManager {
                 indexs.add(index)
             }
         }
-
         var finalUnderscore = "" + underscoreWord
         indexs.forEach { index ->
             val sb = StringBuilder(finalUnderscore).also { it.setCharAt(index, letter) }
@@ -87,5 +91,17 @@ class GameManager {
         underscoreWord = finalUnderscore
 
         return getGameState()
+    }
+    //Check if a string is null and return it's value
+    fun checkNullString(word : String?): String
+    {
+        if(word == null)
+        {
+            return "null"
+        }
+        else
+        {
+            return word
+        }
     }
 }
