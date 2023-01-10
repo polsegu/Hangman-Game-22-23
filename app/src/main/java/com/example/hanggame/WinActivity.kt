@@ -21,7 +21,7 @@ class WinActivity : AppCompatActivity() {
         binding.scoreText.text = "Final Score: ${data}"
 
         binding.mainMenuButtonWIn.setOnClickListener {
-            val intent = Intent(this@WinActivity, MainActivity::class.java)
+            val intent = Intent(this@WinActivity, BannerActivity::class.java)
             startActivity(intent)
         }
     }

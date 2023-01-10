@@ -16,7 +16,7 @@ class LoseActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.mainMenuButton.setOnClickListener {
-            val intent = Intent(this@LoseActivity, MainActivity::class.java)
+            val intent = Intent(this@LoseActivity, BannerActivity::class.java)
             startActivity(intent)
         }
     }
