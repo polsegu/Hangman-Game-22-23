@@ -9,6 +9,7 @@ import com.example.hanggame.databinding.ActivityLoginBinding
 import android.view.View
 import android.widget.Toast
 import android.util.Patterns
+import com.example.hanggame.services.BackgroundSoundService
 
 
 import com.google.firebase.auth.FederatedAuthProvider
@@ -24,7 +25,10 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //Show splash screen
-        playSound()
+        //playSound()
+        val intent = Intent(this, BackgroundSoundService::class.java)
+        startService(intent)
+
         timer = object : CountDownTimer(2500, 1000) {
             override fun onTick(p0: Long) {
                 setTheme(R.style.SplashTheme)

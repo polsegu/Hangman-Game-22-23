@@ -1,0 +1,44 @@
+package com.example.hanggame.services
+
+import android.app.Service
+import android.content.Intent
+import android.content.res.AssetFileDescriptor
+import android.content.res.AssetManager
+import android.media.MediaPlayer
+import android.os.IBinder
+import com.example.hanggame.R
+
+class BackgroundSoundService : Service() {
+
+    private var mMediaPlayer: MediaPlayer? = null
+
+    override fun onBind(arg0: Intent): IBinder? {
+
+        return null
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        playSound()
+        //val afd = applicationContext.assets.openFd(R.raw.back) as AssetFileDescriptor
+        //player.setVolume(100f, 100f)
+
+    }
+
+    private fun playSound() {
+        if (mMediaPlayer == null) {
+            mMediaPlayer = MediaPlayer.create(this, R.raw.background_sound_hangman)
+            mMediaPlayer!!.isLooping = true
+            mMediaPlayer!!.start()
+        } else mMediaPlayer!!.start()
+    }
+
+    fun onUnBind(arg0: Intent): IBinder? {
+        // TO DO Auto-generated method
+        return null
+    }
+
+    companion object {
+        private val TAG: String? = null
+    }
+}
