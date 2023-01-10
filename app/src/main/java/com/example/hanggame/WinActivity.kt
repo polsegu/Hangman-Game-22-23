@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.hanggame.databinding.ActivityWinBinding
+import com.example.hanggame.managers.GameManager
 
 class WinActivity : AppCompatActivity() {
 

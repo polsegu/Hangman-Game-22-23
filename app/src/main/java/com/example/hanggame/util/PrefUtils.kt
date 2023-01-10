@@ -1,9 +1,7 @@
 package com.example.hanggame.util
 import android.content.Context
 import android.preference.PreferenceManager
-import com.example.hanggame.GameManager
-import com.example.hanggame.PlayActivity
-import java.util.prefs.Preferences
+import com.example.hanggame.managers.GameManager
 
 class PrefUtils {
 
@@ -35,7 +33,7 @@ class PrefUtils {
             return GameManager.TimerState.values()[ordinal]
         }
 
-        fun setPreviousState(state:GameManager.TimerState, context: Context)
+        fun setPreviousState(state: GameManager.TimerState, context: Context)
         {
             val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
             val ordinal = state.ordinal

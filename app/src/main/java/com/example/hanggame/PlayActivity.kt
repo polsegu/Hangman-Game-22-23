@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import com.example.hanggame.databinding.ActivityPlayBinding
+import com.example.hanggame.managers.GameManager
 import com.example.hanggame.util.PrefUtils
 
 class PlayActivity : AppCompatActivity() {
