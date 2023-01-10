@@ -24,11 +24,11 @@ class LoginActivity : AppCompatActivity() {
     private var mMediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //Show splash screen
-        //playSound()
+        //Enable music service
         val intent = Intent(this, BackgroundSoundService::class.java)
         startService(intent)
 
+        //Show splash screen
         timer = object : CountDownTimer(2500, 1000) {
             override fun onTick(p0: Long) {
                 setTheme(R.style.SplashTheme)
@@ -98,33 +98,5 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-    }
-
-    private fun playSound() {
-        if (mMediaPlayer == null) {
-            mMediaPlayer = MediaPlayer.create(this, R.raw.background_sound_hangman)
-            mMediaPlayer!!.isLooping = true
-            mMediaPlayer!!.start()
-        } else mMediaPlayer!!.start()
-    }
-
-    private fun pauseSound() {
-        if (mMediaPlayer?.isPlaying == true) mMediaPlayer?.pause()
-    }
-
-    private fun stopSound() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer!!.stop()
-            mMediaPlayer!!.release()
-            mMediaPlayer = null
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (mMediaPlayer != null) {
-            mMediaPlayer!!.release()
-            mMediaPlayer = null
-        }
     }
 }

@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.optionsShow.setOnClickListener {
             //not done yet
+            val intent = Intent(this@MainActivity, OptionsActivity::class.java)
+            startActivity(intent)
         }
     }
 }
