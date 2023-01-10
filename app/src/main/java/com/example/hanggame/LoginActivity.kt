@@ -43,6 +43,8 @@ class LoginActivity : AppCompatActivity() {
 
         //Go to Register
         binding.txtSignUp.setOnClickListener {
+            val intent2 = Intent(this, NotificationsActivity::class.java)
+            startService(intent2)
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
             finish()
