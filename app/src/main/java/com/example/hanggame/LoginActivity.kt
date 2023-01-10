@@ -1,12 +1,16 @@
 package com.example.hanggame
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import com.example.hanggame.databinding.ActivityLoginBinding
 import android.view.View
 import android.widget.Toast
 import android.util.Patterns
+import com.example.hanggame.services.BackgroundSoundService
+
 
 import com.google.firebase.auth.FederatedAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -16,65 +20,88 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var timer : CountDownTimer
+    private var mMediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Enable music service
+        val intent = Intent(this, BackgroundSoundService::class.java)
+        startService(intent)
 
-        Thread.sleep(1000)
-        setTheme(R.style.SplashTheme)
+        //Show splash screen
+        timer = object : CountDownTimer(2500, 1000) {
+            override fun onTick(p0: Long) {
+                setTheme(R.style.SplashTheme)
+            }
+            override fun onFinish() {}
+        }.start()
 
         super.onCreate(savedInstanceState)
-
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
 
-        if(firebaseAuth.currentUser != null)
-        {
-            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        //Auto log in (already loged in)
+        if (firebaseAuth.getCurrentUser() != null) {
+            // User is signed in (getCurrentUser() will be null if not signed in)
+            val intent = Intent(this, MainActivity::class.java);
+            startActivity(intent);
+            finish();
+        }
+
+        //Go to Register
+        binding.txtSignUp.setOnClickListener {
+            val intent2 = Intent(this, NotificationsActivity::class.java)
+            startService(intent2)
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        binding.loginButton.setOnClickListener{
-            val username = binding.userInput.text.toString()
-            val password = binding.passInput.text.toString()
+        //Sign in verification (first time)
+        binding.loginButton.setOnClickListener {
+            val username = binding.userInputWrapper.text.toString()
+            val password = binding.passInputWrapper.text.toString()
 
             firebaseAuth.signInWithEmailAndPassword(username, password)
-                .addOnSuccessListener {
-                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                startActivity(intent)
-                    finish()
-            }.addOnFailureListener {
-                Toast.makeText(this, "Incorrect username or password", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        binding.registerButton.setOnClickListener {
-            val email = binding.userInput.text.toString()
-            val password = binding.passInput.text.toString()
-
-            firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
-                    if(task.isSuccessful)
-                    {
-                        Toast.makeText(this, "Registrared succesfully", Toast.LENGTH_SHORT).show()
-                    }
-                    else
-                    {
-                        Toast.makeText(this, "Invalid registration", Toast.LENGTH_SHORT).show()
+                    if (task.isSuccessful) {
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Incorrect username or password", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
         }
 
-        binding.userInput.setOnFocusChangeListener{ view, hasFocus ->
+        //Anonymous LogIn
+        binding.loginAnonymusButton.setOnClickListener {
+            firebaseAuth.signInAnonymously().addOnCompleteListener(this) {task ->
+                if(task.isSuccessful)
+                {
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                else
+                {
+                    Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        //Check if email is correct or not
+        binding.userInputWrapper.setOnFocusChangeListener{ view, hasFocus ->
             if(!hasFocus)
             {
-                val username = binding.userInput.text.toString()
+                val username = binding.userInputWrapper.text.toString()
                 if(!Patterns.EMAIL_ADDRESS.matcher(username).matches())
-                    binding.userInput.error = "Invalid email"
+                    binding.userInputWrapper.error = "Invalid email"
                 else
-                    binding.userInput.error = null
+                    binding.userInputWrapper.error = null
             }
         }
 

@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import com.example.hanggame.databinding.ActivityPlayBinding
-import kotlin.concurrent.timer
-import kotlin.system.measureTimeMillis
+import com.example.hanggame.managers.GameManager
+import com.example.hanggame.util.PrefUtils
+
 
 class PlayActivity : AppCompatActivity() {
 
@@ -26,9 +26,9 @@ class PlayActivity : AppCompatActivity() {
     private lateinit var scoreShow: TextView
     private lateinit var timer : CountDownTimer
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -42,68 +42,104 @@ class PlayActivity : AppCompatActivity() {
         val gameState = gameManager.startGame()
         updateUI(gameState)
 
-        lettersLayouts.children.forEach { letterView ->
-            if(letterView is TextView)
-            {
-                letterView.setOnClickListener{
-                    val gameState = gameManager.play((letterView).text[0])
-                    updateUI(gameState)
-                    letterView.visibility = View.GONE
-                }
-            }
+        binding.playButton.background.alpha = 120
+
+        binding.playButton.setOnClickListener {
+            binding.pauseButton.visibility = View.VISIBLE
+            binding.playButton.visibility = View.INVISIBLE
+            gameManager.stateTimer = GameManager.TimerState.Running
+            gameManager.maxTime = PrefUtils.getPreviusTimerSecs(this)
+            gameManager.stateTimer = PrefUtils.getPreviousState(this)
+            startGameTimer()
+        }
+        binding.pauseButton.setOnClickListener {
+            timer.cancel()
+            binding.playButton.visibility = View.VISIBLE
+            binding.pauseButton.visibility = View.INVISIBLE
+            PrefUtils.setPreviousTimerSecs((gameManager.currentTime * 1000).toLong(), this)
+            PrefUtils.setPreviousState(gameManager.stateTimer, this)
+            gameManager.stateTimer = GameManager.TimerState.Paused
         }
 
-        timer = object : CountDownTimer(gameManager.getMaxTime(), 1000) {
-            override fun onTick(p0: Long) {
-                timerShow.text = "Time left: ${(p0 / 1000).toInt()}"
-                gameManager.setCurrentTime((p0 / 1000).toInt())
+        if(gameManager.stateTimer == GameManager.TimerState.Running)
+        { //Mira el tiempo si no se acaba lo actualiza, si se acaba ejecuta Lose
+            lettersLayouts.children.forEach { letterView ->
+                if(letterView is TextView)
+                {
+                    letterView.setOnClickListener{
+                        val gameState = gameManager.play((letterView).text[0])
+                        updateUI(gameState)
+                        letterView.visibility = View.INVISIBLE
+                    }
+                }
             }
-
-            override fun onFinish() {
-                val intent = Intent(this@PlayActivity, Lose::class.java)
-                startActivity(intent)
-            }
-        }.start()
-
-
+            startGameTimer()
+        }
     }
 
+    fun startGameTimer()
+    {        //Mira el tiempo si no se acaba lo actualiza, si se acaba ejecuta Lose
+        timer = object : CountDownTimer(gameManager.maxTime, 1000) {
+            override fun onTick(p0: Long) {
+                timerShow.text = "Time left: ${(p0 / 1000).toInt()}"
+                gameManager.currentTime = (p0 / 1000).toInt()
+            }
+            override fun onFinish() {
+                val intent = Intent(this@PlayActivity, LoseActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }.start()
+    }
+    override fun onResume() {
+        super.onResume()
+        if(gameManager.stateTimer == GameManager.TimerState.Paused)
+        {
+            gameManager.maxTime = PrefUtils.getPreviusTimerSecs(this)
+            startGameTimer()
+        }
+        gameManager.stateTimer = GameManager.TimerState.Running
+    }
+    override fun onPause() {
+        super.onPause()
+        timer.cancel()
+        gameManager.stateTimer = GameManager.TimerState.Paused
+        PrefUtils.setPreviousTimerSecs((gameManager.currentTime*1000).toLong(), this)
+        PrefUtils.setPreviousState(gameManager.stateTimer, this)
+    }
+
+    //refresh all the UI
     private fun updateUI(gameState: GameState) {
         when (gameState) {
             is GameState.Lost -> showGameLost()
             is GameState.Won -> showGameWon()
             is GameState.Running -> {
-                scoreShow.text = "Score: ${gameManager.getScore()}"
+
+                scoreShow.text = "Score: ${gameManager.score}"
                 wordTextView.text = gameState.underscoreWord
                 letterUsed.text = "Letters used: ${gameState.letterUsed}"
-                showTries.text = "Tries: ${gameManager.getCurrentTries()} / 5"
+                showTries.text = "Tries: ${gameManager.currentTries} / ${gameManager.tries}"
             }
         }
     }
+
     private fun showGameLost()
     {
         timer.cancel()
-        val intent = Intent(this@PlayActivity, Lose::class.java)
+        val intent = Intent(this@PlayActivity, LoseActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     private fun showGameWon()
     {
         timer.cancel()
-        gameManager.addScore(gameManager.getScore() * gameManager.getCurrentTime())
-        val intent = Intent(this@PlayActivity, Win::class.java)
-        intent.putExtra("score", (gameManager.getScore()).toString())
+        gameManager.addScore(gameManager.score * gameManager.currentTime)
+        val intent = Intent(this@PlayActivity, WinActivity::class.java)
+        intent.putExtra("score", (gameManager.score).toString())
+        intent.putExtra("scoreInt", gameManager.score)
         startActivity(intent)
-    }
-
-    private fun startGame()
-    {
-        val gameState = gameManager.startGame()
-        lettersLayouts.visibility = View.VISIBLE
-        lettersLayouts.children.forEach { letterView->
-            letterView.visibility = View.VISIBLE
-        }
-        updateUI(gameState)
+        finish()
     }
 
 }
