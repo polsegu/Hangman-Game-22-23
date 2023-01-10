@@ -50,6 +50,31 @@
         app:layout_constraintTop_toTopOf="@+id/winImage"
         app:layout_constraintVertical_bias="0.57" />
 
+    <EditText
+        android:id="@+id/nameToSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:autofillHints=""
+        android:background="@drawable/register_background_input"
+        android:drawableStart="@android:drawable/btn_star"
+        android:drawablePadding="10dp"
+        android:ems="10"
+        android:fontFamily="serif"
+        android:hint="Input name..."
+        android:inputType="textPersonName"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/winImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/winImage"
+        app:layout_constraintVertical_bias="0.29000002" />
+
     <TextView
         android:id="@+id/scoreText"
         android:layout_width="wrap_content"
@@ -60,9 +85,9 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.43"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/winImage"
-        app:layout_constraintVertical_bias="0.31" />
+        app:layout_constraintVertical_bias="0.26" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

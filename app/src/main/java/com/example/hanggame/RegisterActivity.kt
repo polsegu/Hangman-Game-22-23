@@ -4,9 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.example.hanggame.databinding.ActivityLoginBinding
 import com.example.hanggame.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
+
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -29,9 +29,9 @@ class RegisterActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if(task.isSuccessful)
                     {
+                        Toast.makeText(this, "Registrared succesfully", Toast.LENGTH_SHORT).show()
                         val intentRegister = Intent(this, NotificationsActivity::class.java)
                         startService(intentRegister)
-                        Toast.makeText(this, "Registrared succesfully", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -49,4 +49,5 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
     }
+
 }

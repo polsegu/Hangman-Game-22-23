@@ -8,7 +8,7 @@ class GameManager {
     private var letterUsed: String = ""
     lateinit var underscoreWord: String
     lateinit var wordToGuess: String
-    val tries = 5
+    val tries = 8
     var currentTries = 0
     var score = 0
     var currentTime:Int = 0

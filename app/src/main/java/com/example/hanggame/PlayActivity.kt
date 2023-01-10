@@ -118,7 +118,7 @@ class PlayActivity : AppCompatActivity() {
                 scoreShow.text = "Score: ${gameManager.score}"
                 wordTextView.text = gameState.underscoreWord
                 letterUsed.text = "Letters used: ${gameState.letterUsed}"
-                showTries.text = "Tries: ${gameManager.currentTries} / 5"
+                showTries.text = "Tries: ${gameManager.currentTries} / ${gameManager.tries}"
             }
         }
     }
@@ -137,6 +137,7 @@ class PlayActivity : AppCompatActivity() {
         gameManager.addScore(gameManager.score * gameManager.currentTime)
         val intent = Intent(this@PlayActivity, WinActivity::class.java)
         intent.putExtra("score", (gameManager.score).toString())
+        intent.putExtra("scoreInt", gameManager.score)
         startActivity(intent)
         finish()
     }
