@@ -12,6 +12,7 @@ import com.example.hanggame.databinding.ActivityPlayBinding
 import com.example.hanggame.managers.GameManager
 import com.example.hanggame.util.PrefUtils
 
+
 class PlayActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayBinding
@@ -24,6 +25,7 @@ class PlayActivity : AppCompatActivity() {
     private lateinit var timerShow: TextView
     private lateinit var scoreShow: TextView
     private lateinit var timer : CountDownTimer
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,6 +114,7 @@ class PlayActivity : AppCompatActivity() {
             is GameState.Lost -> showGameLost()
             is GameState.Won -> showGameWon()
             is GameState.Running -> {
+
                 scoreShow.text = "Score: ${gameManager.score}"
                 wordTextView.text = gameState.underscoreWord
                 letterUsed.text = "Letters used: ${gameState.letterUsed}"
@@ -127,6 +130,7 @@ class PlayActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
     private fun showGameWon()
     {
         timer.cancel()
@@ -136,4 +140,5 @@ class PlayActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
 }

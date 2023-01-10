@@ -1,6 +1,7 @@
 package com.example.hanggame
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -8,6 +9,7 @@ import com.example.hanggame.databinding.ActivityLoginBinding
 import android.view.View
 import android.widget.Toast
 import android.util.Patterns
+
 
 import com.google.firebase.auth.FederatedAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -18,9 +20,11 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var timer : CountDownTimer
+    private var mMediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //Show splash screen
+        playSound()
         timer = object : CountDownTimer(2500, 1000) {
             override fun onTick(p0: Long) {
                 setTheme(R.style.SplashTheme)
@@ -90,5 +94,33 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun playSound() {
+        if (mMediaPlayer == null) {
+            mMediaPlayer = MediaPlayer.create(this, R.raw.background_sound_hangman)
+            mMediaPlayer!!.isLooping = true
+            mMediaPlayer!!.start()
+        } else mMediaPlayer!!.start()
+    }
+
+    private fun pauseSound() {
+        if (mMediaPlayer?.isPlaying == true) mMediaPlayer?.pause()
+    }
+
+    private fun stopSound() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer!!.stop()
+            mMediaPlayer!!.release()
+            mMediaPlayer = null
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (mMediaPlayer != null) {
+            mMediaPlayer!!.release()
+            mMediaPlayer = null
+        }
     }
 }
